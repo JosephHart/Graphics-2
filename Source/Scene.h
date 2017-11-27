@@ -51,12 +51,16 @@ class Scene : public GUObject {
 	Effect									*refMapEffect;
 	Effect									*particleEffect;
 	Effect									*particleUpdateEffect;
+	Effect									*planarShadowEffect;
 	ID3D11Buffer							*cBufferSkyBox = nullptr;
 	ID3D11Buffer							*cBufferBridge = nullptr;
 	ID3D11Buffer							*cBufferFloor = nullptr;
 	ID3D11Buffer							*cBufferSphere = nullptr;
 	ID3D11Buffer							*cBufferParticles = nullptr;
+	ID3D11Buffer							*cBufferShadow = nullptr;
 	CBufferExt								*cBufferExtSrc = nullptr;
+
+	XMMATRIX								shadowMatrix;
 
 	Texture									*brickTexture = nullptr;
 	Texture									*rustDiffTexture = nullptr;

@@ -150,6 +150,10 @@
     <ClCompile Include="Source\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="planar_shadow_ps.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shaders\hlsl\basic_colour_gs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
     </FxCompile>

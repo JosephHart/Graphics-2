@@ -298,5 +298,8 @@
     <FxCompile Include="Shaders\hlsl\fire_update_gs.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="planar_shadow_ps.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

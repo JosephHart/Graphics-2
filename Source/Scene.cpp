@@ -497,7 +497,7 @@ HRESULT Scene::initialiseSceneResources() {
 	basicEffect = new Effect(device, "Shaders\\cso\\basic_texture_vs.cso", "Shaders\\cso\\basic_texture_ps.cso", basicVertexDesc, ARRAYSIZE(basicVertexDesc));
 	particleEffect = new Effect(device, "Shaders\\cso\\fire_vs.cso", "Shaders\\cso\\fire_ps.cso", "Shaders\\cso\\fire_gs.cso", particleVertexDesc, ARRAYSIZE(particleVertexDesc));
 	particleUpdateEffect = new Effect(device, "Shaders\\cso\\fire_vs.cso", "Shaders\\cso\\fire_ps.cso",  particleVertexDesc, ARRAYSIZE(particleVertexDesc));
-
+	planarShadowEffect = new Effect(device, "Shaders\\cso\\per_pixel_lighting_vs.cso", "Shaders\\cso\\planar_shadow_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
 
 	char *tmpShaderBytecode = nullptr;
 	ID3D11GeometryShader* tmpGS = nullptr;
@@ -566,6 +566,11 @@ HRESULT Scene::initialiseSceneResources() {
 	cBufferExtSrc->lightSpecular = XMFLOAT4(1.0, 1.0, 1.0, 1.0);
 	cBufferExtSrc->windDir = XMFLOAT4(0.0, 0.0, -1.0, 1.0);
 
+	XMVECTOR lightPos = XMLoadFloat4(&cBufferExtSrc->lightVec);
+	XMVECTOR shadowPlane = { 0.0f, 1.0f, 0.0f, 0.0f };
+
+	shadowMatrix = XMMatrixShadow(shadowPlane, lightPos);
+
 	XMStoreFloat4(&cBufferExtSrc->eyePos, mainCamera->getPos());// camera->pos;
 
 
@@ -586,6 +591,7 @@ HRESULT Scene::initialiseSceneResources() {
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferSphere);
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferParticles);
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferFloor);
+	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferShadow);
 	// Setup example objects
 	//
 
@@ -630,6 +636,11 @@ HRESULT Scene::updateScene(ID3D11DeviceContext *context) {
 	
 	// Update bridge cBuffer
 	// Scale and translate bridge world matrix
+
+	cBufferExtSrc->worldMatrix = shadowMatrix * XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferShadow);
 
 	cBufferExtSrc->worldMatrix = XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
 	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));	
@@ -711,6 +722,16 @@ HRESULT Scene::renderScene() {
 		context->PSSetConstantBuffers(0, 1, &cBufferBridge);
 		// Render
 		bridge->render(context);
+	}
+
+	if (bridge) {
+		planarShadowEffect->bindPipeline(context);
+		// Setup pipeline for effect
+		// Apply the bridge cBuffer.
+		context->VSSetConstantBuffers(0, 1, &cBufferShadow);
+		context->PSSetConstantBuffers(0, 1, &cBufferShadow);
+		// Render
+		bridge->renderSimp(context);
 	}
 	if (floor) {
 
