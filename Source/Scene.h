@@ -12,6 +12,7 @@
 #include <GPUParticles.h>
 #include <CBufferStructures.h>
 #include <Material.h>
+#include "ShadowMap.h"
 
 class DXSystem;
 class CGDClock;
@@ -21,9 +22,7 @@ class LookAtCamera;
 //class FirstPersonCamera;
 class Texture;
 class Effect;
-
-
-
+class ShadowMap;
 
 
 class Scene : public GUObject {
@@ -39,7 +38,7 @@ class Scene : public GUObject {
 	Material								mattWhite;
 	Material								glossWhite;
 
-
+	ShadowMap								*mSmap;
 
 	// Direct3D scene textures and resource views
 
@@ -69,28 +68,29 @@ class Scene : public GUObject {
 	Texture									*fireTexture = nullptr;
 
 	// Tutorial 04
-	ID3D11ShaderResourceView* renderTargetSRV;
-	ID3D11RenderTargetView* renderTargetRTV;
-
-
-
+	ID3D11ShaderResourceView				*renderTargetSRV;
+	ID3D11RenderTargetView					*renderTargetRTV;
 	
 	//Models
 	Model									*bridge = nullptr;
 	Box										*box = nullptr;
 	Box										*floor = nullptr;
 	Model									*sphere = nullptr;
-	Quad								*triangle = nullptr;
-	GPUParticles								*particles = nullptr;
+	Quad									*triangle = nullptr;
+	GPUParticles							*particles = nullptr;
 	// Main FPS clock
 	CGDClock								*mainClock = nullptr;
 
 	//Camera
 	//FirstPersonCamera						*mainCamera = nullptr;
-	LookAtCamera						*mainCamera = nullptr;
+	LookAtCamera							*mainCamera = nullptr;
 
+	float mLightRotationAngle;
 
-
+	DirectX::XMFLOAT4X4 mLightView;
+	DirectX::XMFLOAT4X4 mLightProj;
+	DirectX::XMFLOAT4X4 mShadowTransform;
+	
 	//
 	// Private interface
 	//
@@ -100,7 +100,6 @@ class Scene : public GUObject {
 
 	// Return TRUE if the window is in a minimised state, FALSE otherwise
 	BOOL isMinimised();
-
 
 public:
 
@@ -144,8 +143,6 @@ public:
 	// Process key up event.  keyCode indicates the key released while extKeyFlags indicates the extended key status at the time of the key up event (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms646281%28v=vs.85%29.aspx).
 	void handleKeyUp(const WPARAM keyCode, const LPARAM extKeyFlags);
 
-	
-
 	//
 	// Methods to handle initialisation, update and rendering of the scene
 	//
@@ -157,10 +154,17 @@ public:
 	HRESULT initialiseSceneResources();
 	HRESULT updateScene(ID3D11DeviceContext *context);
 	HRESULT renderScene();
+	HRESULT renderSceneElements(ID3D11DeviceContext *context);
+	void BuildShadowTransform();
 
 	void DrawScene(ID3D11DeviceContext *context);
 
+};
 
 
-
+struct BoundingSphere
+{
+	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
+	XMFLOAT3 Center;
+	float Radius;
 };

@@ -470,21 +470,20 @@ HRESULT Scene::initialiseSceneResources() {
 	mainCamera = new LookAtCamera();
 	mainCamera->setPos(XMVectorSet(25, 2, -14.5, 1));
 
-
-
-
 	rebuildViewport(mainCamera);
-
-
 
 	ID3D11DeviceContext *context = dx->getDeviceContext();
 	if (!context)
 		return E_FAIL;
 
 
+	//Shadow Map set up
+	static const int SMapSize = 2048;
+	mSmap = new ShadowMap(device, SMapSize, SMapSize);
 
-
-
+	BoundingSphere mSceneBounds;
+	mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	mSceneBounds.Radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);
 
 
 	// Setup objects for the programmable (shader) stages of the pipeline
@@ -631,8 +630,8 @@ HRESULT Scene::updateScene(ID3D11DeviceContext *context) {
 	cBufferExtSrc->Timer = (FLOAT)mainClock->gameTimeElapsed(); 
 
 	XMStoreFloat4(&cBufferExtSrc->eyePos, mainCamera->getPos());
-	
-	printf("Timer=%f\n", (FLOAT)tDelta);
+
+
 	
 	// Update bridge cBuffer
 	// Scale and translate bridge world matrix
@@ -690,21 +689,46 @@ HRESULT Scene::mapCbuffer(void *cBufferExtSrcL, ID3D11Buffer *cBufferExtL)
 
 
 // Render scene
-HRESULT Scene::renderScene() {
+HRESULT Scene::renderScene()
+{
+	DirectX::XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
 
 	ID3D11DeviceContext *context = dx->getDeviceContext();
 	// Validate window and D3D context
 	if (isMinimised() || !context)
 		return E_FAIL;
 
+	ID3D11RenderTargetView* renderTargets[1] = { 0 };
+	context->OMSetRenderTargets(1, renderTargets, mSmap->GetDepthMapDSV());
+	context->ClearDepthStencilView(mSmap->GetDepthMapDSV(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	//Render depth for shadow pass
+	renderSceneElements(context);
+
+
+
+	////////////////////////////////////////////////////////////////////////////
+	//2ND PASS FOR MAIN SCENE RENDER
+	////////////////////////////////////////////////////////////////////////////
+
 	// Clear the screen
-	static const FLOAT clearColor[4] = {1.0f, 0.0f, 0.0f, 1.0f };
-
-
+	static const FLOAT clearColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 	// Clear new render target and original depth stencil
 	context->ClearRenderTargetView(dx->getBackBufferRTV(), clearColor);
 	context->ClearDepthStencilView(dx->getDepthStencil(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	//Render scene as normal
+	renderSceneElements(context);
+
+	// Present current frame to the screen
+	HRESULT hr = dx->presentBackBuffer();
+
+	return S_OK;
+}
+
+HRESULT Scene::renderSceneElements(ID3D11DeviceContext *context)
+{
 
 	if (box) {
 		// Apply the box cBuffer.
@@ -743,55 +767,44 @@ HRESULT Scene::renderScene() {
 		floor->render(context);
 	}
 
-	if (particles) {
-		particleEffect->bindPipeline(context);
-		// Apply the particles cBuffer.
-		context->VSSetConstantBuffers(0, 1, &cBufferParticles);
-		context->GSSetConstantBuffers(0, 1, &cBufferParticles);
-		context->PSSetConstantBuffers(0, 1, &cBufferParticles);
-		// Render
-		particles->update(context);
-		particles->render(context);
-	}
-
-
-	//if (sphere) {
-	//	
-	//	
-	//	// Apply the sphere cBuffer.
-	//	context->VSSetConstantBuffers(0, 1, &cBufferSphere);
-	//	context->PSSetConstantBuffers(0, 1, &cBufferSphere);
-	//	// Render
-	//	sphere->render(context);
-	//}
-
-
-
-
-
-	//if (triangle) {
-	//	// Setup pipeline for effect
-	//	basicEffect->bindPipeline(context);
-	//	// Set Vertex and Pixel shaders
-	//	context->VSSetShader(basicEffect->getVertexShader(), 0, 0);
-	//	context->PSSetShader(basicEffect->getPixelShader(), 0, 0);
-	//	//context->GSSetShader(basicEffect->getGeometryShader(), 0, 0);
-	//	// No cBuffer needed.
-	//	context->PSSetShaderResources(0, 1, &brickTexture->SRV);
-	//	context->PSSetShaderResources(1, 1, &renderTargetSRV);
-	//	// Render
-	//	triangle->render(context);
-	// Release depth buffer shader resource view.
-	//ID3D11ShaderResourceView * nullSRV[1]; nullSRV[0] = NULL; // Used to release depth shader resource so it is available for writing
-	//context->PSSetShaderResources(1, 1, nullSRV);
-
-	//	//context->GSSetShader(NULL, 0, 0); //disable geometry shader
-	//}
-
-	// Present current frame to the screen
-	HRESULT hr = dx->presentBackBuffer();
-
 	return S_OK;
 }
 
 
+void Scene::BuildShadowTransform()
+{
+	// Build Directional Light View Matrix
+	float radius = 18.0f;
+
+	DirectX::XMVECTOR lightDir = { -250.0, 130.0, 145.0 };
+	DirectX::XMVECTOR lightPos = DirectX::XMVectorScale(lightDir, -2.0f*radius);
+	DirectX::XMVECTOR targetPos = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	DirectX::XMMATRIX V = DirectX::XMMatrixLookAtLH(lightPos, targetPos, up);
+
+	// Build Directional Light Ortho Projection Volume Matrix
+	DirectX::XMFLOAT3 center(0.0f, 0.0f, 0.0f);
+	DirectX::XMStoreFloat3(&center, DirectX::XMVector3TransformCoord(targetPos, V));
+
+	DirectX::XMMATRIX P = DirectX::XMMatrixOrthographicOffCenterLH(
+		center.x - radius, center.x + radius,
+		center.y - radius, center.y + radius,
+		center.z - radius, center.z + radius);
+
+	// Build Directional Light Texture Matrix to transform from NDC space to Texture Space
+	DirectX::XMMATRIX T(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	// Multiply View, Projection, and Texture matrices to get Shadow Transformation Matrix
+	// Transforms vertices from world space to the view space of the light, to the projection
+	// plane, to texture coordinates.
+	DirectX::XMMATRIX S = V*P*T;
+
+	DirectX::XMStoreFloat4x4(&mLightView, V);
+	DirectX::XMStoreFloat4x4(&mLightProj, P);
+	DirectX::XMStoreFloat4x4(&mShadowTransform, S);
+}
