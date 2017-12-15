@@ -12,6 +12,7 @@ cbuffer basicCBuffer : register(b0) {
 	float4x4			worldViewProjMatrix;
 	float4x4			worldITMatrix; // Correctly transform normals to world space
 	float4x4			worldMatrix;
+	float4x4			shadowMatrix;
 	float4				eyePos;
 	float4				lightVec; // w=1: Vec represents position, w=0: Vec  represents direction.
 	float4				lightAmbient;
@@ -20,8 +21,6 @@ cbuffer basicCBuffer : register(b0) {
 	float4				windDir;
 	float				Timer;
 	float				grassHeight;
-
-
 
 };
 
@@ -42,7 +41,6 @@ struct vertexInputPacket {
 
 struct vertexOutputPacket {
 
-
 	// Vertex in world coords
 	float3				posW			: POSITION;
 	// Normal in world coords
@@ -51,6 +49,7 @@ struct vertexOutputPacket {
 	float4				matSpecular		: SPECULAR;
 	float2				texCoord		: TEXCOORD;
 	float4				posH			: SV_POSITION;
+	float4				posSdw			: SHADOW;
 };
 
 
@@ -62,7 +61,10 @@ vertexOutputPacket main(vertexInputPacket inputVertex) {
 	vertexOutputPacket outputVertex;
 
 	// Lighting is calculated in world space.
-	outputVertex.posW = mul(float4(inputVertex.pos, 1.0f), worldMatrix).xyz;
+	float4 posW = float4(inputVertex.pos, 1.0);
+	posW = mul(posW, worldMatrix);
+	outputVertex.posW = posW;
+	outputVertex.posSdw = mul(float4(posW.xyz, 1), shadowMatrix);
 	// Transform normals to world space with gWorldIT.
 	outputVertex.normalW = mul(float4(inputVertex.normal, 1.0f), worldITMatrix).xyz;
 	// Pass through material properties

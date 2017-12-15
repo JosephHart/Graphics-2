@@ -7,6 +7,7 @@ __declspec(align(16)) struct CBufferExt  {
 	DirectX::XMMATRIX						WVPMatrix;
 	DirectX::XMMATRIX						worldITMatrix; // Correctly transform normals to world space
 	DirectX::XMMATRIX						worldMatrix;
+	DirectX::XMMATRIX						shadowMatrix;
 	DirectX::XMFLOAT4						eyePos;
 	DirectX::XMFLOAT4						lightVec; // w=1: Vec represents position, w=0: Vec  represents direction.
 	DirectX::XMFLOAT4						lightAmbient;

@@ -1,4 +1,3 @@
-
 //
 // Model a simple light
 //
@@ -20,6 +19,7 @@ cbuffer basicCBuffer : register(b0) {
 	float4x4			worldViewProjMatrix;
 	float4x4			worldITMatrix; // Correctly transform normals to world space
 	float4x4			worldMatrix;
+	float4x4			shadowMatrix;
 	float4				eyePos;
 	float4				lightVec; // w=1: Vec represents position, w=0: Vec  represents direction.
 	float4				lightAmbient;
@@ -37,9 +37,8 @@ cbuffer basicCBuffer : register(b0) {
 
 // Assumes texture bound to texture t0 and sampler bound to sampler s0
 Texture2D myTexture : register(t0);
+Texture2D shadowMap : register(t1);
 SamplerState linearSampler : register(s0);
-
-
 
 
 //-----------------------------------------------------------------
@@ -57,6 +56,7 @@ struct FragmentInputPacket {
 	float4				matSpecular		: SPECULAR; // a represents specular power. 
 	float2				texCoord		: TEXCOORD;
 	float4				posH			: SV_POSITION;
+	float4				posSdw			: SHADOW;
 };
 
 
@@ -73,7 +73,6 @@ struct FragmentOutputPacket {
 FragmentOutputPacket main(FragmentInputPacket v) { 
 
 	FragmentOutputPacket outputFragment;
-
 
 	float3 N = normalize(v.normalW);
 
@@ -100,7 +99,24 @@ FragmentOutputPacket main(FragmentInputPacket v) {
 	float specFactor = pow(max(dot(R, eyeDir), 0.0f), specPower);
 	colour += specFactor * v.matSpecular.xyz * lightSpecular;
 
-	outputFragment.fragmentColour = float4(colour,  baseColour.a);
+	v.posSdw.xyz /= v.posSdw.w;
+
+	float depthShadowMap = 1.0;
+
+	if (v.posSdw.x < 1 && v.posSdw.x>0 && v.posSdw.y < 1 && v.posSdw.y>0)
+		depthShadowMap = shadowMap.Sample(linearSampler, v.posSdw.xy).r;
+
+	if (v.posSdw.z < (depthShadowMap + 0.0001))
+		outputFragment.fragmentColour = float4(colour, baseColour.a);
+	else
+		outputFragment.fragmentColour = float4(0, 0, 0, 1);
+
+	/*float col = shadowMap.Sample(linearSampler, v.texCoord).r;
+	outputFragment.fragmentColour = float4(col, col, col, 1.0);*/
+
+	//outputFragment.fragmentColour = myTexture.Sample(linearSampler, v.texCoord);
+	//outputFragment.fragmentColour = shadowMap.Sample(linearSampler, v.texCoord);
+
 	return outputFragment;
 
 }

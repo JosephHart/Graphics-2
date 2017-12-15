@@ -1,64 +1,77 @@
-f:\my documents\github\graphics-2\debug\dx11proj.pch
-f:\my documents\github\graphics-2\debug\vc120.pdb
-f:\my documents\github\graphics-2\debug\vc120.idb
-f:\my documents\github\graphics-2\debug\stdafx.obj
-f:\my documents\github\graphics-2\debug\dxvertexparticle.obj
-f:\my documents\github\graphics-2\debug\effect.obj
-f:\my documents\github\graphics-2\debug\firstpersoncamera.obj
-f:\my documents\github\graphics-2\debug\cgdconsole.obj
-f:\my documents\github\graphics-2\debug\dxvertexbasic.obj
-f:\my documents\github\graphics-2\debug\dxvertexext.obj
-f:\my documents\github\graphics-2\debug\particles.obj
-f:\my documents\github\graphics-2\debug\dxsystem.obj
-f:\my documents\github\graphics-2\debug\cgdclock.obj
-f:\my documents\github\graphics-2\debug\gumemory.obj
-f:\my documents\github\graphics-2\debug\guobject.obj
-f:\my documents\github\graphics-2\debug\main.obj
-f:\my documents\github\graphics-2\debug\material.obj
-f:\my documents\github\graphics-2\debug\mesh.obj
-f:\my documents\github\graphics-2\debug\quad.obj
-f:\my documents\github\graphics-2\debug\terrain.obj
-f:\my documents\github\graphics-2\debug\texture.obj
-f:\my documents\github\graphics-2\debug\triangle.obj
-f:\my documents\github\graphics-2\debug\animation.obj
-f:\my documents\github\graphics-2\debug\box.obj
-f:\my documents\github\graphics-2\debug\camera.obj
-f:\my documents\github\graphics-2\debug\dxbasemodel.obj
-f:\my documents\github\graphics-2\debug\gpuparticles.obj
-f:\my documents\github\graphics-2\debug\grid.obj
-f:\my documents\github\graphics-2\debug\model.obj
-f:\my documents\github\graphics-2\shaders\cso\basic_colour_gs.cso
-f:\my documents\github\graphics-2\shaders\cso\basic_colour_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\basic_colour_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\basic_texture_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\basic_texture_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\convolve_u_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\convolve_v_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\copy_depth_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\copy_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\emissive_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\fire_gs.cso
-f:\my documents\github\graphics-2\shaders\cso\fire_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\fire_update_gs.cso
-f:\my documents\github\graphics-2\shaders\cso\fire_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\grass_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\grass_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\ocean_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\ocean_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\planar_shadow_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\reflection_map_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\reflection_map_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\screen_quad_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\sky_box_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\sky_box_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\per_pixel_lighting_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\per_pixel_lighting_vs.cso
-f:\my documents\github\graphics-2\shaders\cso\tree_ps.cso
-f:\my documents\github\graphics-2\shaders\cso\tree_vs.cso
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\cl.command.1.tlog
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\cl.read.1.tlog
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\cl.write.1.tlog
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\dx11proj.write.1u.tlog
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\fxc.command.1.tlog
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\fxc.read.1.tlog
-f:\my documents\github\graphics-2\debug\dx11proj.tlog\fxc.write.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.pch
+f:\my documents\advanced real-time rendering\coursework2\debug\vc120.pdb
+f:\my documents\advanced real-time rendering\coursework2\debug\stdafx.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\dxvertexbasic.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\dxvertexext.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\dxvertexparticle.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\effect.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\firstpersoncamera.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\gpuparticles.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\gumemory.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\guobject.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\grid.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\material.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\mesh.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\model.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\particles.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\quad.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\scene.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\shadowmap.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\terrain.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\texture.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\triangle.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\main.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\animation.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\box.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\cgdclock.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\cgdconsole.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\camera.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\dxbasemodel.obj
+f:\my documents\advanced real-time rendering\coursework2\debug\dxsystem.obj
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\basic_colour_gs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\basic_colour_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\basic_colour_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\basic_texture_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\basic_texture_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\build_shadow_map_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\build_shadow_map_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\convolve_u_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\convolve_v_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\copy_depth_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\copy_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\emissive_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\fire_gs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\fire_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\fire_update_gs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\fire_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\grass_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\grass_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\ocean_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\ocean_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\reflection_map_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\reflection_map_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\screen_quad_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\shadow_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\shadow_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\sky_box_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\sky_box_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\per_pixel_lighting_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\per_pixel_lighting_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\tree_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\tree_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\shadow_map_ps.cso
+f:\my documents\advanced real-time rendering\coursework2\shaders\cso\shadow_map_vs.cso
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.ilk
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.exe
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.pdb
+f:\my documents\advanced real-time rendering\coursework2\debug\vc120.idb
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\cl.command.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\cl.read.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\cl.write.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\dx11proj.write.1u.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\fxc.command.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\fxc.read.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\fxc.write.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\link.command.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\link.read.1.tlog
+f:\my documents\advanced real-time rendering\coursework2\debug\dx11proj.tlog\link.write.1.tlog

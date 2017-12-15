@@ -26,10 +26,6 @@ using namespace DirectX;
 using namespace DirectX::PackedVector;
 
 
-
-
-
-
 // Load the Compiled Shader Object (CSO) file 'filename' and return the bytecode in the blob object **bytecode.  This is used to create shader interfaces that require class linkage interfaces.
 // Taken from DXShaderFactory by Paul Angel. This function has been included here for clarity.
 uint32_t DXLoadCSO(const char *filename, char **bytecode)
@@ -44,7 +40,7 @@ uint32_t DXLoadCSO(const char *filename, char **bytecode)
 	try
 	{
 		// Validate parameters
-		if (!filename )
+		if (!filename)
 			throw exception("loadCSO: Invalid parameters");
 
 		// Open file
@@ -101,8 +97,8 @@ uint32_t DXLoadCSO(const char *filename, char **bytecode)
 //
 
 // Private constructor
-Scene::Scene(const LONG _width, const LONG _height, const wchar_t* wndClassName, const wchar_t* wndTitle, int nCmdShow, HINSTANCE hInstance, WNDPROC WndProc) {
-
+Scene::Scene(const LONG _width, const LONG _height, const wchar_t* wndClassName, const wchar_t* wndTitle, int nCmdShow, HINSTANCE hInstance, WNDPROC WndProc)
+{
 	try
 	{
 		// 1. Register window class for main DirectX window
@@ -125,7 +121,7 @@ Scene::Scene(const LONG _width, const LONG _height, const wchar_t* wndClassName,
 		if (!RegisterClassEx(&wcex))
 			throw exception("Cannot register window class for Scene HWND");
 
-		
+
 		// 2. Store instance handle in our global variable
 		hInst = hInstance;
 
@@ -155,7 +151,7 @@ Scene::Scene(const LONG _width, const LONG _height, const wchar_t* wndClassName,
 
 
 		// 5. Initialise render pipeline model (simply sets up an internal std::vector of pipeline objects)
-	
+
 
 		// 6. Create DirectX host environment (associated with main application wnd)
 		dx = DXSystem::CreateDirectXSystem(wndHandle);
@@ -184,7 +180,6 @@ Scene::Scene(const LONG _width, const LONG _height, const wchar_t* wndClassName,
 		// Re-throw exception
 		throw;
 	}
-	
 }
 
 
@@ -227,7 +222,7 @@ Scene* Scene::CreateScene(const LONG _width, const LONG _height, const wchar_t* 
 // Destructor
 Scene::~Scene() {
 
-	
+
 	//free local resources
 
 	if (cBufferExtSrc)
@@ -239,7 +234,7 @@ Scene::~Scene() {
 
 	if (brickTexture)
 		delete(brickTexture);
-	
+
 	if (perPixelLightingEffect)
 		delete(perPixelLightingEffect);
 
@@ -251,8 +246,11 @@ Scene::~Scene() {
 	if (cBufferBridge)
 		cBufferBridge->Release();
 
-//	if (bridge)
-//		bridge->release();
+	if (cBufferShadow)
+		cBufferShadow->Release();
+
+	//	if (bridge)
+	//		bridge->release();
 
 	if (dx) {
 
@@ -289,7 +287,7 @@ HRESULT Scene::resizeResources() {
 		RECT clientRect;
 		GetClientRect(wndHandle, &clientRect);
 
-			renderScene();
+		renderScene();
 	}
 
 	return S_OK;
@@ -347,7 +345,7 @@ void Scene::handleMouseLDrag(const POINT &disp) {
 void Scene::handleMouseWheel(const short zDelta) {
 
 	//LookAtCamera
-	if (zDelta<0)
+	if (zDelta < 0)
 		mainCamera->zoomCamera(1.2f);
 	else if (zDelta>0)
 		mainCamera->zoomCamera(0.9f);
@@ -357,9 +355,37 @@ void Scene::handleMouseWheel(const short zDelta) {
 
 
 // Process key down event.  keyCode indicates the key pressed while extKeyFlags indicates the extended key status at the time of the key down event (see http://msdn.microsoft.com/en-gb/library/windows/desktop/ms646280%28v=vs.85%29.aspx).
-void Scene::handleKeyDown(const WPARAM keyCode, const LPARAM extKeyFlags) {
+void Scene::handleKeyDown(const WPARAM keyCode, const LPARAM extKeyFlags)
+{
+	float x = 0, y = 0, z = 0;
 
-	// Add key down handler here...
+	//move sphere back to origin
+	if (keyCode == VK_SPACE)
+	{
+		sphereTranslationMatrix = XMMatrixIdentity();
+		return;
+	}
+	//move sphere up (+y)
+	else if (keyCode == 0x57) //0x57 = "W"
+		y += 0.3;
+	//move sphere left (-x)
+	else if (keyCode == 0x41) //0x41 = "A"
+		x -= 0.3;
+	//move sphere down (-y)
+	else if (keyCode == 0x53) //0x53 = "S"
+		y -= 0.3;
+	//move sphere right (+x)
+	else if (keyCode == 0x44) //0x44 = "D"
+		x += 0.3;
+	//move sphere forwards (+z)
+	else if (keyCode == 0x51) //0x51 = "Q"
+		z += 0.3;
+	//move sphere backwards (-z)
+	else if (keyCode == 0x45) //0x45 = "E"
+		z -= 0.3;
+
+	//combine the new translation matrix with the current sphereTranslationMatrix
+	sphereTranslationMatrix *= XMMatrixTranslation(x, y, z);
 }
 
 
@@ -382,7 +408,7 @@ HRESULT Scene::rebuildViewport(Camera *camera){
 
 	ID3D11DeviceContext *context = dx->getDeviceContext();
 
-	if ( !context)
+	if (!context)
 		return E_FAIL;
 
 	// Bind the render target view and depth/stencil view to the pipeline.
@@ -400,9 +426,9 @@ HRESULT Scene::rebuildViewport(Camera *camera){
 	viewport.MaxDepth = 1.0f;
 	//Set Viewport
 	context->RSSetViewports(1, &viewport);
-	
+
 	// Compute the projection matrix.
-	
+
 	camera->setProjMatrix(XMMatrixPerspectiveFovLH(0.25f*3.14, viewport.Width / viewport.Height, 1.0f, 1000.0f));
 	return S_OK;
 }
@@ -422,7 +448,7 @@ HRESULT Scene::LoadShader(ID3D11Device *device, const char *filename, char **PSB
 	cout << "Done: PShader memory bytes = " << shaderBytes << endl;
 	// Create shader object
 	HRESULT hr = device->CreatePixelShader(PSBytecodeLocal, shaderBytes, NULL, pixelShader);
-	
+
 	if (!SUCCEEDED(hr))
 		throw std::exception("Cannot create PixelShader interface");
 	return hr;
@@ -476,18 +502,10 @@ HRESULT Scene::initialiseSceneResources() {
 	if (!context)
 		return E_FAIL;
 
-
-	//Shadow Map set up
-	static const int SMapSize = 2048;
-	mSmap = new ShadowMap(device, SMapSize, SMapSize);
-
-	BoundingSphere mSceneBounds;
-	mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	mSceneBounds.Radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);
-
+	static const int S_MAP_SIZE = 512;
+	shadowMap = new ShadowMap(device, S_MAP_SIZE, S_MAP_SIZE);
 
 	// Setup objects for the programmable (shader) stages of the pipeline
-
 
 	perPixelLightingEffect = new Effect(device, "Shaders\\cso\\per_pixel_lighting_vs.cso", "Shaders\\cso\\per_pixel_lighting_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
 
@@ -495,15 +513,12 @@ HRESULT Scene::initialiseSceneResources() {
 	//basicEffect = new Effect(device, "Shaders\\cso\\basic_colour_vs.cso", "Shaders\\cso\\basic_colour_ps.cso", "Shaders\\cso\\basic_colour_gs.cso", basicVertexDesc, ARRAYSIZE(basicVertexDesc));
 	basicEffect = new Effect(device, "Shaders\\cso\\basic_texture_vs.cso", "Shaders\\cso\\basic_texture_ps.cso", basicVertexDesc, ARRAYSIZE(basicVertexDesc));
 	particleEffect = new Effect(device, "Shaders\\cso\\fire_vs.cso", "Shaders\\cso\\fire_ps.cso", "Shaders\\cso\\fire_gs.cso", particleVertexDesc, ARRAYSIZE(particleVertexDesc));
-	particleUpdateEffect = new Effect(device, "Shaders\\cso\\fire_vs.cso", "Shaders\\cso\\fire_ps.cso",  particleVertexDesc, ARRAYSIZE(particleVertexDesc));
-	planarShadowEffect = new Effect(device, "Shaders\\cso\\per_pixel_lighting_vs.cso", "Shaders\\cso\\planar_shadow_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
+	particleUpdateEffect = new Effect(device, "Shaders\\cso\\fire_vs.cso", "Shaders\\cso\\fire_ps.cso", particleVertexDesc, ARRAYSIZE(particleVertexDesc));
+
 
 	char *tmpShaderBytecode = nullptr;
 	ID3D11GeometryShader* tmpGS = nullptr;
-	particleUpdateEffect->CreateGeometryShaderWithSO(device, "Shaders\\cso\\fire_update_gs.cso", &tmpShaderBytecode,&tmpGS);
-
-	
-
+	particleUpdateEffect->CreateGeometryShaderWithSO(device, "Shaders\\cso\\fire_update_gs.cso", &tmpShaderBytecode, &tmpGS);
 
 	// get current blendState and blend description of particleEffect (alpha blending off by default)
 	ID3D11BlendState *partBS = particleEffect->getBlendState();
@@ -519,10 +534,10 @@ HRESULT Scene::initialiseSceneResources() {
 	partBD.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 
 	// Create new blendState
-	partBS->Release(); 
+	partBS->Release();
 	device->CreateBlendState(&partBD, &partBS);
 	particleEffect->setBlendState(partBS);
-	
+
 
 	// get current depthStencil State and depthStencil description of particleEffect (depth read and write by default)
 	ID3D11DepthStencilState *partDSS = particleEffect->getDepthStencilState();
@@ -532,7 +547,7 @@ HRESULT Scene::initialiseSceneResources() {
 	//Disable Depth Writing for particles
 	partDSD.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	// Create custom fire depth-stencil state object
-	partDSS->Release(); 
+	partDSS->Release();
 	device->CreateDepthStencilState(&partDSD, &partDSS);
 	particleEffect->setDepthStencilState(partDSS);
 	//perPixelLightingEffect->setDepthStencilState(partDSS);
@@ -544,14 +559,15 @@ HRESULT Scene::initialiseSceneResources() {
 	partDSD.StencilEnable = FALSE;
 	partDSD.StencilReadMask = 0xFF;
 	partDSD.StencilWriteMask = 0xFF;
-	
+
 	device->CreateDepthStencilState(&partDSD, &partDSS);
 	particleUpdateEffect->setDepthStencilState(partDSS);
 	particleEffect->setDepthStencilState(partDSS);
 
 	refMapEffect = new Effect(device, "Shaders\\cso\\reflection_map_vs.cso", "Shaders\\cso\\reflection_map_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
-
-
+	shadowEffect = new Effect(device, "Shaders\\cso\\shadow_vs.cso", "Shaders\\cso\\shadow_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
+	//shadowMapEffect = new Effect(device, "Shaders\\cso\\shadow_map_vs.cso", "Shaders\\cso\\shadow_map_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
+	buildShadowMapEffect = new Effect(device, "Shaders\\cso\\build_shadow_map_vs.cso", "Shaders\\cso\\build_shadow_map_ps.cso", extVertexDesc, ARRAYSIZE(extVertexDesc));
 
 	// Setup CBuffer
 	cBufferExtSrc = (CBufferExt*)_aligned_malloc(sizeof(CBufferExt), 16);
@@ -559,19 +575,28 @@ HRESULT Scene::initialiseSceneResources() {
 	cBufferExtSrc->worldMatrix = XMMatrixIdentity();
 	cBufferExtSrc->worldITMatrix = XMMatrixIdentity();
 	cBufferExtSrc->WVPMatrix = mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
-	cBufferExtSrc->lightVec = XMFLOAT4(-250.0, 130.0, 145.0, 1.0); // Positional light
+	cBufferExtSrc->lightVec = lightVec; // Positional light
 	cBufferExtSrc->lightAmbient = XMFLOAT4(0.3, 0.3, 0.3, 1.0);
 	cBufferExtSrc->lightDiffuse = XMFLOAT4(0.8, 0.8, 0.8, 1.0);
 	cBufferExtSrc->lightSpecular = XMFLOAT4(1.0, 1.0, 1.0, 1.0);
 	cBufferExtSrc->windDir = XMFLOAT4(0.0, 0.0, -1.0, 1.0);
 
-	XMVECTOR lightPos = XMLoadFloat4(&cBufferExtSrc->lightVec);
-	XMVECTOR shadowPlane = { 0.0f, 1.0f, 0.0f, 0.0f };
+	lightCamera = new LookAtCamera();
+	//lightCamera = new FirstPersonCamera(XMLoadFloat4(&lightVec), XMVectorSet(0, 1, 0, 0), XMLoadFloat4(&reverseLightVec));
+	lightCamera->setPos(XMLoadFloat4(&lightVec) * 0.5);
+	lightCamera->setProjMatrix(XMMatrixPerspectiveFovLH(0.25f * 3.14, 1, 1.0f, 1000.0f));
 
-	shadowMatrix = XMMatrixShadow(shadowPlane, lightPos);
+	cBufferExtSrc->shadowMatrix = lightCamera->getViewMatrix() * lightCamera->getProjMatrix();
 
-	XMStoreFloat4(&cBufferExtSrc->eyePos, mainCamera->getPos());// camera->pos;
+	XMStoreFloat4(&cBufferExtSrc->eyePos, mainCamera->getPos());
 
+	//vector represents the normal to the shadow plane - in this case, shadow plane is the ground, and the normal is facing directly upwards
+	//XMVECTOR shadowPlane = XMVectorSet(0, 1, 0, 0);
+
+	//planar shadow setup
+	//XMVECTOR lightPos = XMVectorSet(-250.0, 130.0, 145.0, 1.0);
+	//shadowMatrix = XMMatrixShadow(shadowPlane, lightPos);
+	//planar shadow setup
 
 	D3D11_BUFFER_DESC cbufferDesc;
 	D3D11_SUBRESOURCE_DATA cbufferInitData;
@@ -582,15 +607,16 @@ HRESULT Scene::initialiseSceneResources() {
 	cbufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	cbufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cbufferInitData.pSysMem = cBufferExtSrc;
-	
+
 
 	//Create bridge CBuffer
 	HRESULT hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferBridge);
+	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferShadow);
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferSkyBox);
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferSphere);
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferParticles);
 	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferFloor);
-	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferShadow);
+	hr = device->CreateBuffer(&cbufferDesc, &cbufferInitData, &cBufferWalls);
 	// Setup example objects
 	//
 
@@ -605,69 +631,200 @@ HRESULT Scene::initialiseSceneResources() {
 	rustSpecTexture = new Texture(device, L"Resources\\Textures\\rustSpec.jpg");
 	fireTexture = new Texture(device, L"Resources\\Textures\\Fire.tif");
 
-	ID3D11ShaderResourceView *sphereTextureArray[] = { rustDiffTexture->SRV, envMapTexture->SRV, rustSpecTexture->SRV };
+	//ID3D11ShaderResourceView *sphereTextureArray[] = { rustDiffTexture->SRV, brickTexture->SRV, rustSpecTexture->SRV };
 
 	//load bridge
 	bridge = new Model(device, perPixelLightingEffect, wstring(L"Resources\\Models\\bridge.3ds"), brickTexture->SRV, &mattWhite);
-	sphere = new Model(device, refMapEffect, wstring(L"Resources\\Models\\sphere.3ds"), sphereTextureArray, 3, &glossWhite);
+	walls = new Model(device, perPixelLightingEffect, wstring(L"Resources\\Models\\Walls.3ds"), brickTexture->SRV, &mattWhite);
+	sphere = new Model(device, perPixelLightingEffect, wstring(L"Resources\\Models\\sphere.3ds"), brickTexture->SRV, &mattWhite);
 	particles = new GPUParticles(device, particleEffect, particleUpdateEffect, fireTexture->SRV, &mattWhite);
 	box = new Box(device, skyBoxEffect, envMapTexture->SRV);
 	triangle = new Quad(device, basicEffect->getVSInputLayout());
+	shadowMapTexturedQuad = new Quad(device, basicEffect->getVSInputLayout());
 	floor = new Box(device, perPixelLightingEffect, NULL);
 
 	return S_OK;
 }
 
 
+//Original
 // Update scene state (perform animations etc)
+//HRESULT Scene::updateScene(ID3D11DeviceContext *context, LookAtCamera* camera) {
+//
+//	BuildShadowTransform();
+//	static gu_seconds lastFrameTime = 0;
+//	mainClock->tick();
+//	gu_seconds tDelta = mainClock->gameTimeElapsed()-lastFrameTime;
+//	
+//	lastFrameTime = mainClock->gameTimeElapsed();
+//	cBufferExtSrc->Timer = (FLOAT)mainClock->gameTimeElapsed(); 
+//
+//	XMStoreFloat4(&cBufferExtSrc->eyePos, camera->getPos());
+//	
+//	cBufferExtSrc->shadowMatrix = S;
+//
+//	//printf("Timer=%f\n", (FLOAT)tDelta);
+//	
+//	// Update bridge cBuffer
+//	// Scale and translate bridge world matrix
+//
+//	cBufferExtSrc->worldMatrix = XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
+//	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));	
+//	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*camera->getViewMatrix()*camera->getProjMatrix();
+//	mapCbuffer(cBufferExtSrc, cBufferBridge);
+//
+//	/*cBufferExtSrc->worldMatrix = shadowMatrix * XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
+//	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+//	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
+//	mapCbuffer(cBufferExtSrc, cBufferShadow);*/
+//
+//	cBufferExtSrc->worldMatrix = XMMatrixScaling(40, 0.5, 40)*XMMatrixTranslation(0, -0.8, 0);
+//	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+//	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*camera->getViewMatrix()*camera->getProjMatrix();
+//	mapCbuffer(cBufferExtSrc, cBufferFloor);
+//
+//	cBufferExtSrc->worldMatrix = XMMatrixScaling(100.0,100, 100)*XMMatrixTranslation(0, 0, 0);
+//	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+//	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*camera->getViewMatrix()*camera->getProjMatrix();
+//	mapCbuffer(cBufferExtSrc, cBufferSkyBox);
+//
+//	cBufferExtSrc->worldMatrix = XMMatrixScaling(1.0, 1, 1)*XMMatrixTranslation(0, 0, 0)*XMMatrixRotationX(tDelta);
+//	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+//	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*camera->getViewMatrix()*camera->getProjMatrix();
+//	mapCbuffer(cBufferExtSrc, cBufferSphere);
+//
+//	cBufferExtSrc->Timer = (FLOAT)tDelta;// speed up particles
+//	cBufferExtSrc->windDir = XMFLOAT4(0.0, 0.0, cos((FLOAT)mainClock->gameTimeElapsed()*3), 1.0);
+//	// Scale and translate fire world matrix
+//	cBufferExtSrc->worldMatrix = XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(0, 0.0, 0);
+//	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+//	cBufferExtSrc->WVPMatrix =  camera->getViewMatrix() * camera->getProjMatrix();
+//	mapCbuffer(cBufferExtSrc, cBufferParticles);
+//
+//	//BuildShadowTransform();
+//
+//	return S_OK;
+//}
+
 HRESULT Scene::updateScene(ID3D11DeviceContext *context) {
 
 	static gu_seconds lastFrameTime = 0;
 	mainClock->tick();
-	gu_seconds tDelta = mainClock->gameTimeElapsed()-lastFrameTime;
-	
+	gu_seconds tDelta = mainClock->gameTimeElapsed() - lastFrameTime;
+
 	lastFrameTime = mainClock->gameTimeElapsed();
-	cBufferExtSrc->Timer = (FLOAT)mainClock->gameTimeElapsed(); 
+	cBufferExtSrc->Timer = (FLOAT)mainClock->gameTimeElapsed();
 
 	XMStoreFloat4(&cBufferExtSrc->eyePos, mainCamera->getPos());
 
+	printf("Timer=%f\n", (FLOAT)tDelta);
 
-	
-	// Update bridge cBuffer
-	// Scale and translate bridge world matrix
-
-	cBufferExtSrc->worldMatrix = shadowMatrix * XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
-	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
-	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
-	mapCbuffer(cBufferExtSrc, cBufferShadow);
+	//cBufferExtSrc->shadowMatrix = S;
 
 	cBufferExtSrc->worldMatrix = XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
-	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));	
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
 	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
 	mapCbuffer(cBufferExtSrc, cBufferBridge);
 
-	cBufferExtSrc->worldMatrix = XMMatrixScaling(10, 0.5, 10)*XMMatrixTranslation(0, -0.8, 0);
+	//cBufferExtSrc->worldMatrix = shadowMatrix*XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
+	//cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	//cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
+	//mapCbuffer(cBufferExtSrc, cBufferShadow);
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(30, 0.5, 30)*XMMatrixTranslation(0, -0.8, 0);
 	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
 	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
 	mapCbuffer(cBufferExtSrc, cBufferFloor);
 
-	cBufferExtSrc->worldMatrix = XMMatrixScaling(100.0,100, 100)*XMMatrixTranslation(0, 0, 0);
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(0.25, 0.25, 0.25)*XMMatrixTranslation(0, 0, 0) * XMMatrixRotationY(90);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferWalls);
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(100.0, 100, 100)*XMMatrixTranslation(0, 0, 0);
 	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
 	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
 	mapCbuffer(cBufferExtSrc, cBufferSkyBox);
 
-	cBufferExtSrc->worldMatrix = XMMatrixScaling(1.0, 1, 1)*XMMatrixTranslation(0, 0, 0)*XMMatrixRotationX(tDelta);
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(1, 1, 1) * sphereTranslationMatrix * XMMatrixRotationX(tDelta);
 	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
 	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
 	mapCbuffer(cBufferExtSrc, cBufferSphere);
 
 	cBufferExtSrc->Timer = (FLOAT)tDelta;// speed up particles
-	cBufferExtSrc->windDir = XMFLOAT4(0.0, 0.0, cos((FLOAT)mainClock->gameTimeElapsed()*3), 1.0);
+	cBufferExtSrc->windDir = XMFLOAT4(0.0, 0.0, cos((FLOAT)mainClock->gameTimeElapsed() * 3), 1.0);
 	// Scale and translate fire world matrix
 	cBufferExtSrc->worldMatrix = XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(0, 0.0, 0);
 	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
-	cBufferExtSrc->WVPMatrix =  mainCamera->getViewMatrix() * mainCamera->getProjMatrix();
+	cBufferExtSrc->WVPMatrix = mainCamera->getViewMatrix() * mainCamera->getProjMatrix();
 	mapCbuffer(cBufferExtSrc, cBufferParticles);
+
+	return S_OK;
+}
+
+HRESULT Scene::updateSceneShadow(ID3D11DeviceContext* context)
+{
+	buildShadowTransform();
+	
+	static gu_seconds lastFrameTime = 0;
+	mainClock->tick();
+	gu_seconds tDelta = mainClock->gameTimeElapsed() - lastFrameTime;
+
+	lastFrameTime = mainClock->gameTimeElapsed();
+	cBufferExtSrc->Timer = (FLOAT)mainClock->gameTimeElapsed();
+
+	XMStoreFloat4(&cBufferExtSrc->eyePos, mainCamera->getPos());
+
+	printf("Timer=%f\n", (FLOAT)tDelta);
+
+	cBufferExtSrc->shadowMatrix = S;
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*lightCamera->getViewMatrix()*lightCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferBridge);
+
+	//cBufferExtSrc->worldMatrix = shadowMatrix*XMMatrixScaling(0.05, 0.05, 0.05)*XMMatrixTranslation(4.5, -0.0, 4);
+	//cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	//cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*mainCamera->getViewMatrix()*mainCamera->getProjMatrix();
+	//mapCbuffer(cBufferExtSrc, cBufferShadow);
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(30, 0.5, 30)*XMMatrixTranslation(0, -0.8, 0);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*lightCamera->getViewMatrix()*lightCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferFloor);
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(0.25, 0.25, 0.25)*XMMatrixTranslation(0, 0, 0) * XMMatrixRotationY(90);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*lightCamera->getViewMatrix()*lightCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferWalls);
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(100.0, 100, 100)*XMMatrixTranslation(0, 0, 0);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*lightCamera->getViewMatrix()*lightCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferSkyBox);
+
+	cBufferExtSrc->worldMatrix = XMMatrixScaling(1, 1, 1) * sphereTranslationMatrix * XMMatrixRotationX(tDelta);
+	cBufferExtSrc->worldITMatrix = XMMatrixTranspose(XMMatrixInverse(nullptr, cBufferExtSrc->worldMatrix));
+	cBufferExtSrc->WVPMatrix = cBufferExtSrc->worldMatrix*lightCamera->getViewMatrix()*lightCamera->getProjMatrix();
+	mapCbuffer(cBufferExtSrc, cBufferSphere);
+
+	return S_OK;
+}
+
+HRESULT Scene::buildShadowTransform()
+{
+	XMMATRIX V = lightCamera->getViewMatrix();
+	XMMATRIX P = lightCamera->getProjMatrix();
+
+	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
+	XMMATRIX T(
+		0.5f, 0.0f, 0.0f, 0.0f,
+		0.0f, -0.5f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f);
+
+	S = V*P*T;
 
 	return S_OK;
 }
@@ -691,35 +848,52 @@ HRESULT Scene::mapCbuffer(void *cBufferExtSrcL, ID3D11Buffer *cBufferExtL)
 // Render scene
 HRESULT Scene::renderScene()
 {
-	DirectX::XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
-
 	ID3D11DeviceContext *context = dx->getDeviceContext();
+
 	// Validate window and D3D context
 	if (isMinimised() || !context)
 		return E_FAIL;
 
-	ID3D11RenderTargetView* renderTargets[1] = { 0 };
-	context->OMSetRenderTargets(1, renderTargets, mSmap->GetDepthMapDSV());
-	context->ClearDepthStencilView(mSmap->GetDepthMapDSV(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-
-	//Render depth for shadow pass
-	renderSceneElements(context);
-
-
-
-	////////////////////////////////////////////////////////////////////////////
-	//2ND PASS FOR MAIN SCENE RENDER
-	////////////////////////////////////////////////////////////////////////////
-
 	// Clear the screen
-	static const FLOAT clearColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	static const FLOAT clearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-	// Clear new render target and original depth stencil
+	//Get render target
+	context->OMGetRenderTargets(1, &defaultRenderTargetView, &defaultDepthStencilView);
+
+
+	//Pass 1	
+	//Set a NULL render target (to disable colour writes), and set the current depth stencil view to the one associated with the shadow map texture
+	shadowMap->BindDSVAndSetNullRenderTarget(context);
+
+	//Update scene from perspective of light camera
+	//(light camera position is set to the light's position, looking at origin)
+	updateSceneShadow(context);
+
+	//Render objects
+	renderObjects(context);
+
+	// Restore the back and depth buffer to the OM stage.
+	context->OMSetRenderTargets(1, &defaultRenderTargetView, defaultDepthStencilView);
+	//Pass 1
+
+
+	//Pass 2
+	//Clear default render target view and depth stencil view 
 	context->ClearRenderTargetView(dx->getBackBufferRTV(), clearColor);
 	context->ClearDepthStencilView(dx->getDepthStencil(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	//Render scene as normal
-	renderSceneElements(context);
+	//Update scene from perspective of main camera
+	updateScene(context);
+
+	//Re-set standard viewport
+	context->RSSetViewports(1, &viewport);
+
+	//Set SRV for shadow map texture in shader
+	context->PSSetShaderResources(1, 1, &shadowMap->mDepthMapSRV);
+
+	//Draw objects normally
+	renderObjects(context);
+	//Pass 2
 
 	// Present current frame to the screen
 	HRESULT hr = dx->presentBackBuffer();
@@ -727,9 +901,8 @@ HRESULT Scene::renderScene()
 	return S_OK;
 }
 
-HRESULT Scene::renderSceneElements(ID3D11DeviceContext *context)
+HRESULT Scene::renderObjects(ID3D11DeviceContext* context)
 {
-
 	if (box) {
 		// Apply the box cBuffer.
 		context->VSSetConstantBuffers(0, 1, &cBufferSkyBox);
@@ -746,65 +919,49 @@ HRESULT Scene::renderSceneElements(ID3D11DeviceContext *context)
 		context->PSSetConstantBuffers(0, 1, &cBufferBridge);
 		// Render
 		bridge->render(context);
-	}
 
-	if (bridge) {
-		planarShadowEffect->bindPipeline(context);
-		// Setup pipeline for effect
-		// Apply the bridge cBuffer.
+		/*shadowEffect->bindPipeline(context);
+
 		context->VSSetConstantBuffers(0, 1, &cBufferShadow);
 		context->PSSetConstantBuffers(0, 1, &cBufferShadow);
-		// Render
-		bridge->renderSimp(context);
-	}
-	if (floor) {
 
-		// Setup pipeline for effect
-		// Apply the bridge cBuffer.
+		bridge->renderSimp(context);*/
+	}
+	if (floor)
+	{
 		context->VSSetConstantBuffers(0, 1, &cBufferFloor);
 		context->PSSetConstantBuffers(0, 1, &cBufferFloor);
 		// Render
 		floor->render(context);
 	}
 
+	if (walls)
+	{
+		context->VSSetConstantBuffers(0, 1, &cBufferWalls);
+		context->PSSetConstantBuffers(0, 1, &cBufferWalls);
+		// Render
+		walls->render(context);
+	}
+
+	//if (particles) {
+	//	particleEffect->bindPipeline(context);
+	//	// Apply the particles cBuffer.
+	//	context->VSSetConstantBuffers(0, 1, &cBufferParticles);
+	//	context->GSSetConstantBuffers(0, 1, &cBufferParticles);
+	//	context->PSSetConstantBuffers(0, 1, &cBufferParticles);
+	//	// Render
+	//	particles->update(context);
+	//	particles->render(context);
+	//}
+
+
+	if (sphere) {
+		// Apply the sphere cBuffer.
+		context->VSSetConstantBuffers(0, 1, &cBufferSphere);
+		context->PSSetConstantBuffers(0, 1, &cBufferSphere);
+		// Render
+		sphere->render(context);
+	}
+
 	return S_OK;
-}
-
-
-void Scene::BuildShadowTransform()
-{
-	// Build Directional Light View Matrix
-	float radius = 18.0f;
-
-	DirectX::XMVECTOR lightDir = { -250.0, 130.0, 145.0 };
-	DirectX::XMVECTOR lightPos = DirectX::XMVectorScale(lightDir, -2.0f*radius);
-	DirectX::XMVECTOR targetPos = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	DirectX::XMMATRIX V = DirectX::XMMatrixLookAtLH(lightPos, targetPos, up);
-
-	// Build Directional Light Ortho Projection Volume Matrix
-	DirectX::XMFLOAT3 center(0.0f, 0.0f, 0.0f);
-	DirectX::XMStoreFloat3(&center, DirectX::XMVector3TransformCoord(targetPos, V));
-
-	DirectX::XMMATRIX P = DirectX::XMMatrixOrthographicOffCenterLH(
-		center.x - radius, center.x + radius,
-		center.y - radius, center.y + radius,
-		center.z - radius, center.z + radius);
-
-	// Build Directional Light Texture Matrix to transform from NDC space to Texture Space
-	DirectX::XMMATRIX T(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
-
-	// Multiply View, Projection, and Texture matrices to get Shadow Transformation Matrix
-	// Transforms vertices from world space to the view space of the light, to the projection
-	// plane, to texture coordinates.
-	DirectX::XMMATRIX S = V*P*T;
-
-	DirectX::XMStoreFloat4x4(&mLightView, V);
-	DirectX::XMStoreFloat4x4(&mLightProj, P);
-	DirectX::XMStoreFloat4x4(&mShadowTransform, S);
 }

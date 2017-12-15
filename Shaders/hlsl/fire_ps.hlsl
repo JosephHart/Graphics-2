@@ -20,6 +20,7 @@ cbuffer basicCBuffer : register(b0) {
 	float4x4			worldViewProjMatrix;
 	float4x4			projIMatrix;				// Correctly transform normals to world space
 	float4x4			worldMatrix;
+	float4x4			gLightWorldViewProjTexture;
 	float4				eyePos;
 	float4				lightVec;					// w=1: Vec represents position, w=0: Vec  represents direction.
 	float4				lightAmbient;

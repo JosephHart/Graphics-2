@@ -13,6 +13,7 @@ cbuffer basicCBuffer : register(b0) {
 	float4x4			viewProjMatrix;
 	float4x4			worldITMatrix;				// Not used
 	float4x4			worldMatrix;				// Not used
+	float4x4			gLightWorldViewProjTexture;
 	float4				eyePos;
 	float4				lightVec;					// Not used
 	float4				lightAmbient;				// Not used

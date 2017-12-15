@@ -19,7 +19,7 @@ class CGDClock;
 class Model;
 class Camera;
 class LookAtCamera;
-//class FirstPersonCamera;
+class FirstPersonCamera;
 class Texture;
 class Effect;
 class ShadowMap;
@@ -38,8 +38,6 @@ class Scene : public GUObject {
 	Material								mattWhite;
 	Material								glossWhite;
 
-	ShadowMap								*mSmap;
-
 	// Direct3D scene textures and resource views
 
 	//Effects
@@ -49,17 +47,19 @@ class Scene : public GUObject {
 	Effect									*basicEffect;
 	Effect									*refMapEffect;
 	Effect									*particleEffect;
+	Effect									*shadowEffect;
+	Effect									*shadowMapEffect;
+	Effect									*buildShadowMapEffect;
 	Effect									*particleUpdateEffect;
-	Effect									*planarShadowEffect;
+
 	ID3D11Buffer							*cBufferSkyBox = nullptr;
 	ID3D11Buffer							*cBufferBridge = nullptr;
+	ID3D11Buffer							*cBufferShadow = nullptr;
 	ID3D11Buffer							*cBufferFloor = nullptr;
+	ID3D11Buffer							*cBufferWalls = nullptr;
 	ID3D11Buffer							*cBufferSphere = nullptr;
 	ID3D11Buffer							*cBufferParticles = nullptr;
-	ID3D11Buffer							*cBufferShadow = nullptr;
 	CBufferExt								*cBufferExtSrc = nullptr;
-
-	XMMATRIX								shadowMatrix;
 
 	Texture									*brickTexture = nullptr;
 	Texture									*rustDiffTexture = nullptr;
@@ -70,27 +70,46 @@ class Scene : public GUObject {
 	// Tutorial 04
 	ID3D11ShaderResourceView				*renderTargetSRV;
 	ID3D11RenderTargetView					*renderTargetRTV;
-	
+
+	ID3D11RenderTargetView					*defaultRenderTargetView = nullptr;
+	ID3D11DepthStencilView					*defaultDepthStencilView = nullptr;
+
+	XMMATRIX								shadowMatrix;
+
+	ShadowMap*								shadowMap = nullptr;
+
+	XMFLOAT4X4								mLightView;
+	XMFLOAT4X4								mLightProj;
+	XMFLOAT4X4								mShadowTransform;
+
 	//Models
 	Model									*bridge = nullptr;
+	Model									*walls = nullptr;
 	Box										*box = nullptr;
 	Box										*floor = nullptr;
 	Model									*sphere = nullptr;
 	Quad									*triangle = nullptr;
+	Quad									*shadowMapTexturedQuad = nullptr;
 	GPUParticles							*particles = nullptr;
 	// Main FPS clock
 	CGDClock								*mainClock = nullptr;
 
+	
 	//Camera
 	//FirstPersonCamera						*mainCamera = nullptr;
-	LookAtCamera							*mainCamera = nullptr;
+	LookAtCamera						*mainCamera = nullptr;
+	//FirstPersonCamera						*lightCamera = nullptr;
+	LookAtCamera						*lightCamera = nullptr;
 
-	float mLightRotationAngle;
+	XMFLOAT4 lightVec = XMFLOAT4(-250.0, 130.0, 145.0, 1.0);
+	XMFLOAT4 reverseLightVec = XMFLOAT4(250.0, -130.0, -145.0, 1.0);
 
-	DirectX::XMFLOAT4X4 mLightView;
-	DirectX::XMFLOAT4X4 mLightProj;
-	DirectX::XMFLOAT4X4 mShadowTransform;
-	
+	//Matrix for transforming shadow map pixels from perspective of light to perspective of main camera
+	XMMATRIX S;
+
+	//Used for applying a user-defined translation to the reflective sphere in updateScene()
+	DirectX::XMMATRIX						sphereTranslationMatrix = XMMatrixIdentity();
+
 	//
 	// Private interface
 	//
@@ -100,6 +119,7 @@ class Scene : public GUObject {
 
 	// Return TRUE if the window is in a minimised state, FALSE otherwise
 	BOOL isMinimised();
+
 
 public:
 
@@ -143,6 +163,8 @@ public:
 	// Process key up event.  keyCode indicates the key released while extKeyFlags indicates the extended key status at the time of the key up event (see http://msdn.microsoft.com/en-us/library/windows/desktop/ms646281%28v=vs.85%29.aspx).
 	void handleKeyUp(const WPARAM keyCode, const LPARAM extKeyFlags);
 
+	
+
 	//
 	// Methods to handle initialisation, update and rendering of the scene
 	//
@@ -153,18 +175,14 @@ public:
 	uint32_t LoadShader(ID3D11Device *device, const char *filename, char **VSBytecode, ID3D11VertexShader **vertexShader);
 	HRESULT initialiseSceneResources();
 	HRESULT updateScene(ID3D11DeviceContext *context);
+	HRESULT updateSceneShadow(ID3D11DeviceContext *context);
+	HRESULT buildShadowTransform();
 	HRESULT renderScene();
-	HRESULT renderSceneElements(ID3D11DeviceContext *context);
-	void BuildShadowTransform();
+	HRESULT renderObjects(ID3D11DeviceContext* context);
 
 	void DrawScene(ID3D11DeviceContext *context);
 
-};
 
 
-struct BoundingSphere
-{
-	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
-	XMFLOAT3 Center;
-	float Radius;
+
 };

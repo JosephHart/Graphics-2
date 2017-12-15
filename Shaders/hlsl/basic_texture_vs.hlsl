@@ -28,8 +28,18 @@ vertexOutputPacket main(vertexInputPacket inputVertex) {
 	vertexOutputPacket outputVertex;
 
 	outputVertex.colour = inputVertex.colour;
-	outputVertex.texCoord = inputVertex.pos.xy*0.5+0.5;
-	outputVertex.posH = float4(inputVertex.pos*0.9,1);//mul(float4(inputVertex.pos, 1.0), viewProjMatrix);
+	outputVertex.texCoord = inputVertex.pos.xy*0.5 + 0.5;
+	outputVertex.posH = float4(inputVertex.pos*0.9, 1);//mul(float4(inputVertex.pos, 1.0), viewProjMatrix);
 
 	return outputVertex;
+
+	//vertexOutputPacket outputVertex;
+
+	//outputVertex.colour = inputVertex.colour;
+	//float3 pos = inputVertex.pos;
+	//	pos.y *= -1;
+	//outputVertex.texCoord = pos.xy*0.5+0.5;
+	//outputVertex.posH = float4(inputVertex.pos*0.9,1);//mul(float4(inputVertex.pos, 1.0), viewProjMatrix);
+
+	//return outputVertex;
 }
