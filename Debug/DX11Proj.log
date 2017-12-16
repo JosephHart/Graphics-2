@@ -1,145 +1,18 @@
-﻿  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\basic_colour_gs.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\basic_colour_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\basic_colour_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\basic_texture_ps.hlsl(28,34-122): warning X3206: 'Load': implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\basic_texture_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\basic_texture_vs.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\build_shadow_map_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\build_shadow_map_vs.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\convolve_u_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\convolve_v_ps.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\copy_depth_ps.hlsl(32,20-115): warning X3206: 'Load': implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\copy_depth_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\copy_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\emissive_ps.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\fire_gs.hlsl(65,9-61): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\fire_gs.hlsl(67,26-37): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\fire_gs.hlsl(96,2-69): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\fire_gs.hlsl(99,19-30): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\fire_gs.hlsl(103,11): warning X3078: 'i': loop control variable conflicts with a previous declaration in the outer scope; most recent declaration will be used
-FXC : warning X4715: emitting a system-interpreted value which may not be written in every execution path of the shader
-FXC : warning X4715: emitting a system-interpreted value which may not be written in every execution path of the shader
-FXC : warning X4715: emitting a system-interpreted value which may not be written in every execution path of the shader
-FXC : warning X4715: emitting a system-interpreted value which may not be written in every execution path of the shader
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\fire_gs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\fire_ps.hlsl(94,20-64): warning X3206: 'Load': implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\fire_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\fire_update_gs.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\fire_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\grass_ps.hlsl(86,22-86): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\grass_ps.hlsl(120,12-62): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\grass_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\grass_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\ocean_ps.hlsl(124,9-27): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\ocean_ps.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\ocean_vs.hlsl(151,15-25): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\ocean_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\reflection_map_ps.hlsl(94,23-50): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\reflection_map_ps.hlsl(102,17-75): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\reflection_map_ps.hlsl(110,28-42): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\reflection_map_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\reflection_map_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\screen_quad_vs.hlsl(27,2-50): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\screen_quad_vs.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\shadow_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\shadow_vs.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\sky_box_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\sky_box_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\per_pixel_lighting_ps.hlsl(84,18-45): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\per_pixel_lighting_ps.hlsl(92,12-69): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\per_pixel_lighting_ps.hlsl(97,28-42): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\per_pixel_lighting_ps.hlsl(100,12-57): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\per_pixel_lighting_ps.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\per_pixel_lighting_vs.hlsl(66,2-25): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\per_pixel_lighting_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\tree_ps.hlsl(86,18-45): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\tree_ps.hlsl(94,12-69): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\tree_ps.hlsl(98,28-42): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\hlsl\tree_ps.hlsl(101,12-57): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\tree_ps.cso
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\tree_vs.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Source\shadow_map_ps.hlsl(96,18-45): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Source\shadow_map_ps.hlsl(105,12-69): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Source\shadow_map_ps.hlsl(110,28-42): warning X3206: implicit truncation of vector type
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Source\shadow_map_ps.hlsl(113,12-57): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\shadow_map_ps.cso
-C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Source\shadow_map_vs.hlsl(55,23-54): warning X3578: Output value 'main' is not completely initialized
-  
-  compilation object save succeeded; see C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Shaders\cso\shadow_map_vs.cso
-  stdafx.cpp
-  Triangle.cpp
-  Texture.cpp
-  Terrain.cpp
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\terrain.cpp(61): warning C4018: '<' : signed/unsigned mismatch
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\terrain.cpp(63): warning C4018: '<' : signed/unsigned mismatch
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\terrain.cpp(67): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\terrain.cpp(69): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\terrain.cpp(70): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\terrain.cpp(71): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-  ShadowMap.cpp
-  Quad.cpp
-  Mesh.cpp
-  Material.cpp
-  main.cpp
-  GUObject.cpp
-  GUMemory.cpp
-  CGDClock.cpp
-  DXSystem.cpp
-  Scene.cpp
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(370): warning C4305: '+=' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(373): warning C4305: '-=' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(376): warning C4305: '-=' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(379): warning C4305: '+=' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(382): warning C4305: '+=' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(385): warning C4305: '-=' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(432): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(579): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(580): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(587): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(724): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(734): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(749): warning C4244: 'argument' : conversion from 'gu_seconds' to 'float', possible loss of data
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(782): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(792): warning C4305: 'argument' : truncation from 'double' to 'float'
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\scene.cpp(807): warning C4244: 'argument' : conversion from 'gu_seconds' to 'float', possible loss of data
-  Particles.cpp
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\particles.cpp(34): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-  DXVertexExt.cpp
-  DXVertexBasic.cpp
-  CGDConsole.cpp
-  FirstPersonCamera.cpp
-  Effect.cpp
-  DXVertexParticle.cpp
-  Generating Code...
-  Compiling...
-  Model.cpp
-  Grid.cpp
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\grid.cpp(27): warning C4018: '<' : signed/unsigned mismatch
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\grid.cpp(29): warning C4018: '<' : signed/unsigned mismatch
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\grid.cpp(32): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\grid.cpp(33): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\grid.cpp(63): warning C4018: '<' : signed/unsigned mismatch
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\grid.cpp(65): warning C4018: '<' : signed/unsigned mismatch
-  GPUParticles.cpp
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\gpuparticles.cpp(33): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-  DXBaseModel.cpp
-  Camera.cpp
-  Box.cpp
-  Animation.cpp
-c:\users\joeis\desktop\ar-tr-shadows-master\coursework2\source\animation.cpp(67): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-CoreStructures.lib(GUObject.obj) : warning LNK4204: 'C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Debug\vc120.pdb' is missing debugging information for referencing module; linking object as if no debug info
-  DX11Proj.vcxproj -> C:\Users\joeis\Desktop\AR-TR-SHADOWS-master\Coursework2\Debug\DX11Proj.exe
+﻿  Scene.cpp
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(404): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(550): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(551): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(558): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(634): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(638): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(644): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(648): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(669): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(674): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(684): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(689): warning C4244: 'argument' : conversion from 'gu_seconds' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(720): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(725): warning C4305: 'argument' : truncation from 'double' to 'float'
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(735): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+c:\users\joeis\documents\github\graphics-2\source\scene.cpp(740): warning C4244: 'argument' : conversion from 'gu_seconds' to 'float', possible loss of data
+  DX11Proj.vcxproj -> C:\Users\joeis\Documents\GitHub\Graphics-2\Debug\DX11Proj.exe

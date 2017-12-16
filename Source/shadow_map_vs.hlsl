@@ -56,7 +56,7 @@ vertexOutputPacket main(vertexInputPacket inputVertex) {
 
 	vertexOutputPacket outputVertex;
 
-	// Transform to light?s projective space.
+	// Transform to light's projective space.
 	outputVertex.ProjTex = mul(float4(inputVertex.pos, 1.0f), gLightWorldViewProjTexture); //fix
 
 	// Lighting is calculated in world space.

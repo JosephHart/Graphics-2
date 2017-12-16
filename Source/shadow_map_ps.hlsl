@@ -97,8 +97,7 @@ FragmentOutputPacket main(FragmentInputPacket v) {
 
 	// Calculate the lambertian term (essentially the brightness of the surface point based on the dot product of the normal vector with the vector pointing from v to the light source's location)
 	float3 lightDir = -lightVec.xyz; // Directional light
-	if (lightVec.w == 1.0)
-		lightDir = lightVec.xyz - v.posW; // Positional light
+	if (lightVec.w == 1.0) lightDir = lightVec.xyz - v.posW; // Positional light
 	lightDir = normalize(lightDir);
 
 	// Add diffuse light if relevant (otherwise we end up just returning the ambient light colour)

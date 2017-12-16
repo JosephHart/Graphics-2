@@ -56,9 +56,10 @@ class Scene : public GUObject {
 	ID3D11Buffer							*cBufferBridge = nullptr;
 	ID3D11Buffer							*cBufferShadow = nullptr;
 	ID3D11Buffer							*cBufferFloor = nullptr;
-	ID3D11Buffer							*cBufferWalls = nullptr;
 	ID3D11Buffer							*cBufferSphere = nullptr;
 	ID3D11Buffer							*cBufferParticles = nullptr;
+	ID3D11Buffer							*cBufferDropship = nullptr;
+	ID3D11Buffer							*cBufferBush[40];
 	CBufferExt								*cBufferExtSrc = nullptr;
 
 	Texture									*brickTexture = nullptr;
@@ -66,6 +67,13 @@ class Scene : public GUObject {
 	Texture									*rustSpecTexture = nullptr;
 	Texture									*envMapTexture = nullptr;
 	Texture									*fireTexture = nullptr;
+	Texture									*dropshipTex = nullptr;
+	Texture									*grassTex = nullptr;
+	Texture									*furTex = nullptr;
+
+	//Bushes
+	float									bushPosX[40];
+	float									bushPosZ[40];
 
 	// Tutorial 04
 	ID3D11ShaderResourceView				*renderTargetSRV;
@@ -84,22 +92,24 @@ class Scene : public GUObject {
 
 	//Models
 	Model									*bridge = nullptr;
-	Model									*walls = nullptr;
 	Box										*box = nullptr;
 	Box										*floor = nullptr;
 	Model									*sphere = nullptr;
 	Quad									*triangle = nullptr;
 	Quad									*shadowMapTexturedQuad = nullptr;
 	GPUParticles							*particles = nullptr;
+	Model									*dropship = nullptr;
+	Model									*bush = nullptr;
+
 	// Main FPS clock
 	CGDClock								*mainClock = nullptr;
 
 	
 	//Camera
 	//FirstPersonCamera						*mainCamera = nullptr;
-	LookAtCamera						*mainCamera = nullptr;
+	LookAtCamera							*mainCamera = nullptr;
 	//FirstPersonCamera						*lightCamera = nullptr;
-	LookAtCamera						*lightCamera = nullptr;
+	LookAtCamera							*lightCamera = nullptr;
 
 	XMFLOAT4 lightVec = XMFLOAT4(-250.0, 130.0, 145.0, 1.0);
 	XMFLOAT4 reverseLightVec = XMFLOAT4(250.0, -130.0, -145.0, 1.0);
